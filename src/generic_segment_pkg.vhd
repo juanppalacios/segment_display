@@ -19,29 +19,6 @@ package generic_segment_pkg is
 
     type encoding_type is array (letter_type) of std_logic_vector(SEGMENT_COUNT downto 0);
 
-        -- todo: maybe we can have a config.txt file depending on our type of seven segment, maybe aided by a Python script?
-        -- constant BCD_ENCODING : encoding_type :=
-        -- (
-            --     '0'    => "10000000", -- todo: configure actual segments
-            --     '1'    => "00000001",
-            --     '2'    => "00000010",
-            --     '3'    => "00000011",
-            --     '4'    => "00000100",
-            --     '5'    => "00000101",
-            --     '6'    => "00000110",
-            --     '7'    => "00000111",
-            --     '8'    => "00001000",
-            --     '9'    => "00001001",
-            --     'A'    => "00001010",
-            --     'B'    => "00001011",
-            --     'C'    => "00001100",
-            --     'D'    => "00001101",
-            --     'E'    => "00001110",
-            --     'F'    => "00001111",
-            --     ' '    => "00000000",
-            --     others => "00000000"
-            -- );
-
     type word_type is array(positive range <>) of letter_type;
 
     --> we need a register that is 8 * DISPLAY_LENGTH bits long

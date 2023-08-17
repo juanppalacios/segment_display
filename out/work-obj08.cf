@@ -1,0 +1,8 @@
+v 4
+file "/Users/jppalacios/dev/github/hdl/segment_display/" "./sim/segment_pkg_tb.vhd" "3d3651b25ae5e07c1e5ce33b364d97d6e5136e9b" "20230817031359.780":
+  entity segment_pkg_tb at 2( 28) + 0 on 54;
+  architecture testbench of segment_pkg_tb at 18( 264) + 0 on 55;
+file "/Users/jppalacios/dev/github/hdl/segment_display/" "./src/segment_pkg.vhd" "d70dc31c21326c8bffbf3daf7d53389a8d666912" "20230817031359.758":
+  package generic_segment_pkg at 5( 95) + 0 on 51 body;
+  package body generic_segment_pkg at 64( 2087) + 0 on 52;
+  package configured_segment_pkg at 152( 5357) + 0 on 53;

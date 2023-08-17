@@ -8,15 +8,17 @@ use std.textio.all;
 
 library work;
 
-use work.segment_pkg.all;
+use work.configured_segment_pkg.all;
 
-entity a is
+-- todo: create a simple design and drive DUT
+
+entity segment_pkg_tb is
 end entity;
 
-architecture tb of a is
+architecture testbench of segment_pkg_tb is
 
 	signal test   : letter_type := 'A';
-    signal word : word_type(1 to 3) := "A A";
+    constant word : word_type(1 to 3) := "A A";
 
     signal out_port : std_logic_vector(encoded_register'range) := (others=>'0');
 
@@ -29,36 +31,39 @@ begin
 
         wait for 10 ns;
 
-        set_message("AA");
+        set_message("AAAAAAAA");
+        out_port <= encoded_register;
         report " " & to_bstring(encoded_register);
 
         --> now we can see that each digit has our value
         set_message("AAAA");
+        out_port <= encoded_register;
         report " " & to_bstring(encoded_register);
 
         wait for 10 ns;
 
         set_message("AAAA AAA");
+        out_port <= encoded_register;
         report " " & to_bstring(encoded_register);
 
         wait for 10 ns;
 
         set_message("AA AA  A");
+        out_port <= encoded_register;
         report " " & to_bstring(encoded_register);
 
         wait for 10 ns;
 
         set_message(word);
+        out_port <= encoded_register;
         report " " & to_bstring(encoded_register);
 
         out_port <= get_message("AA AA");
 
-        wait for 10 ns;
+        wait for 100 ns;
 
-        report "our port: " & to_bstring(out_port);
-
-
-
+        report " " & to_bstring(out_port);
         wait;
     end process;
-end;
+
+end architecture;

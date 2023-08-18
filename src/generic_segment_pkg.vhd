@@ -102,12 +102,29 @@ package body generic_segment_pkg is
     procedure set_message(message : word_type) is
         variable message_length : natural := message'length;
         variable offset : natural := 0;
+        variable left_bound  : natural := 0;
+        variable right_bound : natural := 0;
     begin
         assert message_length <= DISPLAY_LENGTH report "message length MUST be less than " & integer'image(DISPLAY_LENGTH) severity error;
         encoded_register := (others => '0');
+        report integer'image(encoded_register'length) severity note;
         for letter in message_length downto 1 loop
-            encoded_register(encoded_register'high - (DISPLAY_LENGTH * offset) downto encoded_register'high - (DISPLAY_LENGTH * offset) - SEGMENT_COUNT) := BCD_ENCODING(message(letter));
-            offset := offset + 1;
+            
+            --> define our character's bit-boundaries
+            left_bound := ;
+            
+            report "for-loop: "
+                & integer'image((encoded_register'high - (SEGMENT_COUNT * offset)) - (encoded_register'high - (SEGMENT_COUNT * offset) - SEGMENT_COUNT))
+                & ":";
+                -- & integer'image(encoded_register'high - (SEGMENT_COUNT * offset) - SEGMENT_COUNT);
+
+            report "current letter: " & to_string(letter) & ", " & to_string(BCD_ENCODING(message(letter))) severity note;
+
+            --> from our left to right bit-bound, append our letter's segment
+            encoded_register(encoded_register'high - offset downto encoded_register'high - SEGMENT_COUNT + 1) := (others => '1');
+            -- encoded_register(encoded_register'high - (SEGMENT_COUNT * offset) downto (encoded_register'high - (SEGMENT_COUNT * offset) - SEGMENT_COUNT)) := BCD_ENCODING(message(letter));
+            offset := (offset * SEGMENT_COUNT) + 1;
+            report "passed loop: " & integer'image(letter) severity note;
         end loop;
     end procedure;
 
@@ -117,7 +134,7 @@ package body generic_segment_pkg is
     begin
         encoded_register := (others => '0');
         for letter in message_length downto 1 loop
-            encoded_register(encoded_register'high - (DISPLAY_LENGTH * offset) downto encoded_register'high - (DISPLAY_LENGTH * offset) - SEGMENT_COUNT) := BCD_ENCODING(message(letter));
+            encoded_register(encoded_register'high - (8 * offset) downto encoded_register'high - (8 * offset) - 7) := BCD_ENCODING(message(letter));
             offset := offset + 1;
         end loop;
 

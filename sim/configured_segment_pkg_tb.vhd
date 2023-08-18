@@ -11,6 +11,7 @@ library work;
 use work.configured_segment_pkg.all;
 
 -- todo: create a simple design and drive DUT
+-- todo: current design is broken due to bound-error, quick fix needed
 
 entity segment_pkg_tb is
 end entity;
@@ -31,38 +32,44 @@ begin
 
         wait for 10 ns;
 
-        set_message("AAAAAAAA");
+        set_message("A");
         out_port <= encoded_register;
         report " " & to_bstring(encoded_register);
+
+        wait for 200 ns;
+        
+        -- 11111111000000000000000000000000000000000000000000000000
+        -- 11111111100000000000000000000000000000000000000000000000
+        -- 11111110000000000000000000000000000000000000000000000000
 
         --> now we can see that each digit has our value
-        set_message("AAAA");
-        out_port <= encoded_register;
-        report " " & to_bstring(encoded_register);
+        -- set_message("AAAA");
+        -- out_port <= encoded_register;
+        -- report " " & to_bstring(encoded_register);
 
-        wait for 10 ns;
+        -- wait for 10 ns;
 
-        set_message("AAAA AAA");
-        out_port <= encoded_register;
-        report " " & to_bstring(encoded_register);
+        -- set_message("AAAA AAA");
+        -- out_port <= encoded_register;
+        -- report " " & to_bstring(encoded_register);
 
-        wait for 10 ns;
+        -- wait for 10 ns;
 
-        set_message("AA AA  A");
-        out_port <= encoded_register;
-        report " " & to_bstring(encoded_register);
+        -- set_message("AA AA  A");
+        -- out_port <= encoded_register;
+        -- report " " & to_bstring(encoded_register);
 
-        wait for 10 ns;
+        -- wait for 10 ns;
 
-        set_message(word);
-        out_port <= encoded_register;
-        report " " & to_bstring(encoded_register);
+        -- set_message(word);
+        -- out_port <= encoded_register;
+        -- report " " & to_bstring(encoded_register);
 
-        out_port <= get_message("AA AA");
+        -- out_port <= get_message("AA AA");
 
-        wait for 100 ns;
+        -- wait for 100 ns;
 
-        report " " & to_bstring(out_port);
+        -- report " " & to_bstring(out_port);
         wait;
     end process;
 

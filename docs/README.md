@@ -5,9 +5,11 @@ This project attempts to simplify interfacing a seven-segment display.
 As shown below, the user can simply call a function that sets up the seven-segment display.
 Works with a subset of the VHDL character type.
 
-![](./images/objective.png)
+![project objective](./images/objective.png)
 
-## TO-DO:
+![user guide](./images/userguide.png)
+
+## To-Do:
 - ADD COMMENTS!
 - flush out user guide
 - design a simple DUT, drive DUT via TB

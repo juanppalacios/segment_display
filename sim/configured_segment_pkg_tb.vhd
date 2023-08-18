@@ -27,7 +27,7 @@ begin
 	process begin
         wait for 10 ns;
 
-        assert BCD_ENCODING('1') = "00000001" report "error" severity error;
+        assert BCD_ENCODING('1') = "0000001" report "error" severity error;
 
         wait for 10 ns;
 

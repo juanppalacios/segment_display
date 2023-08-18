@@ -17,12 +17,12 @@ package generic_segment_pkg is
 
     subtype letter_type is character range ' ' to 'z';
 
-    type encoding_type is array (letter_type) of std_logic_vector(SEGMENT_COUNT downto 0);
+    type encoding_type is array (letter_type) of std_logic_vector(SEGMENT_COUNT - 1 downto 0);
 
     type word_type is array(positive range <>) of letter_type;
 
     --> we need a register that is 8 * DISPLAY_LENGTH bits long
-    shared variable encoded_register : std_logic_vector(8 * DISPLAY_LENGTH - 1 downto 0) := (others => '0');
+    shared variable encoded_register : std_logic_vector((DISPLAY_LENGTH * SEGMENT_COUNT) - 1 downto 0) := (others => '0');
 
     --> --- METHODS --- <--
 
@@ -55,19 +55,19 @@ package body generic_segment_pkg is
             if SEGMENT_COUNT = 7 then
                 encoding_config :=
                 (
-                    '0'    => "10000000",
-                    '1'    => "00000001",
-                    'A'    => "00001010",
-                    ' '    => "00000000",
+                    '0'    => "1000000",
+                    '1'    => "0000001",
+                    'A'    => "0001010",
+                    ' '    => "0000000",
                     others => (others => '0')
                 );
             else
                 encoding_config :=
                 (
-                    '0'    => "100000000",
-                    '1'    => "000000010",
-                    'A'    => "000010100",
-                    ' '    => "000000000",
+                    '0'    => "10000000",
+                    '1'    => "00000010",
+                    'A'    => "00010100",
+                    ' '    => "00000000",
                     others => (others => '0')
                 );
             end if;
@@ -77,19 +77,19 @@ package body generic_segment_pkg is
             if SEGMENT_COUNT = 7 then
                 encoding_config :=
                 (
-                    '0'    => "10000000",
-                    '1'    => "00000001",
-                    'A'    => "00001010",
-                    ' '    => "00000000",
+                    '0'    => "1000000",
+                    '1'    => "0000001",
+                    'A'    => "0001010",
+                    ' '    => "0000000",
                     others => (others => '0')
                 );
             else
                 encoding_config :=
                 (
-                    '0'    => "100000000",
-                    '1'    => "000000010",
-                    'A'    => "000010100",
-                    ' '    => "000000000",
+                    '0'    => "10000000",
+                    '1'    => "00000010",
+                    'A'    => "00010100",
+                    ' '    => "00000000",
                     others => (others => '0')
                 );
             end if;
@@ -106,7 +106,7 @@ package body generic_segment_pkg is
         assert message_length <= DISPLAY_LENGTH report "message length MUST be less than " & integer'image(DISPLAY_LENGTH) severity error;
         encoded_register := (others => '0');
         for letter in message_length downto 1 loop
-            encoded_register(encoded_register'high - (8 * offset) downto encoded_register'high - (8 * offset) - 7) := BCD_ENCODING(message(letter));
+            encoded_register(encoded_register'high - (DISPLAY_LENGTH * offset) downto encoded_register'high - (DISPLAY_LENGTH * offset) - SEGMENT_COUNT) := BCD_ENCODING(message(letter));
             offset := offset + 1;
         end loop;
     end procedure;
@@ -117,7 +117,7 @@ package body generic_segment_pkg is
     begin
         encoded_register := (others => '0');
         for letter in message_length downto 1 loop
-            encoded_register(encoded_register'high - (8 * offset) downto encoded_register'high - (8 * offset) - 7) := BCD_ENCODING(message(letter));
+            encoded_register(encoded_register'high - (DISPLAY_LENGTH * offset) downto encoded_register'high - (DISPLAY_LENGTH * offset) - SEGMENT_COUNT) := BCD_ENCODING(message(letter));
             offset := offset + 1;
         end loop;
 

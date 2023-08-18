@@ -1,6 +1,6 @@
 --> package enables simple segment display interfacing
 
--- todo: find a way to configure bits
+-- todo: implement 
 
 library ieee;
 use ieee.std_logic_1164.all;
@@ -109,22 +109,13 @@ package body generic_segment_pkg is
         encoded_register := (others => '0');
         report integer'image(encoded_register'length) severity note;
         for letter in message_length downto 1 loop
-            
             --> define our character's bit-boundaries
-            left_bound := ;
-            
-            report "for-loop: "
-                & integer'image((encoded_register'high - (SEGMENT_COUNT * offset)) - (encoded_register'high - (SEGMENT_COUNT * offset) - SEGMENT_COUNT))
-                & ":";
-                -- & integer'image(encoded_register'high - (SEGMENT_COUNT * offset) - SEGMENT_COUNT);
+            left_bound  := encoded_register'high - (SEGMENT_COUNT * offset);
+            right_bound := left_bound - SEGMENT_COUNT + 1;
 
-            report "current letter: " & to_string(letter) & ", " & to_string(BCD_ENCODING(message(letter))) severity note;
-
-            --> from our left to right bit-bound, append our letter's segment
-            encoded_register(encoded_register'high - offset downto encoded_register'high - SEGMENT_COUNT + 1) := (others => '1');
-            -- encoded_register(encoded_register'high - (SEGMENT_COUNT * offset) downto (encoded_register'high - (SEGMENT_COUNT * offset) - SEGMENT_COUNT)) := BCD_ENCODING(message(letter));
+            --> add current character to our register
+            encoded_register(left_bound downto right_bound) := BCD_ENCODING(message(letter));
             offset := (offset * SEGMENT_COUNT) + 1;
-            report "passed loop: " & integer'image(letter) severity note;
         end loop;
     end procedure;
 

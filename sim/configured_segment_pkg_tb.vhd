@@ -3,7 +3,7 @@ library IEEE;
 use IEEE.std_logic_1164.all;
 
 library std;
--- use std.env.all;
+use std.env.all;
 use std.textio.all;
 
 library work;
@@ -11,62 +11,36 @@ library work;
 use work.configured_segment_pkg.all;
 
 -- todo: create a simple design and drive DUT
--- todo: current design is broken due to bound-error, quick fix needed
 
 entity segment_pkg_tb is
 end entity;
 
 architecture testbench of segment_pkg_tb is
 
-	signal test   : letter_type := 'A';
-    constant word : word_type(1 to 3) := "A A";
+    constant test_data : sentence_type(1 to 8) := (
+        "AA  11  ",
+        "AAAA    ",
+        "AA  A   ",
+        "A   AA  ",
+        "A   1   ",
+        "A   1111",
+        "1111A   ",
+        "11111111"
+    );
 
-    signal out_port : std_logic_vector(encoded_register'range) := (others=>'0');
+    signal message : std_logic_vector(ENCODING_BITWIDTH'range) := (others=>'0');
 
 begin
 
 	process begin
         wait for 10 ns;
 
-        assert BCD_ENCODING('1') = "0000001" report "error" severity error;
+        for i in test_data'range loop
+            message <= set_message(test_data(i));
+            wait for 10 ns;
+        end loop;
 
-        wait for 10 ns;
-
-        set_message("A");
-        out_port <= encoded_register;
-        report " " & to_bstring(encoded_register);
-
-        wait for 200 ns;
-
-        --> now we can see that each digit has our value
-        -- set_message("AAAA");
-        -- out_port <= encoded_register;
-        -- report " " & to_bstring(encoded_register);
-
-        -- wait for 10 ns;
-
-        -- set_message("AAAA AAA");
-        -- out_port <= encoded_register;
-        -- report " " & to_bstring(encoded_register);
-
-        -- wait for 10 ns;
-
-        -- set_message("AA AA  A");
-        -- out_port <= encoded_register;
-        -- report " " & to_bstring(encoded_register);
-
-        -- wait for 10 ns;
-
-        -- set_message(word);
-        -- out_port <= encoded_register;
-        -- report " " & to_bstring(encoded_register);
-
-        -- out_port <= get_message("AA AA");
-
-        -- wait for 100 ns;
-
-        -- report " " & to_bstring(out_port);
-        wait;
+        finish;
     end process;
 
 end architecture;

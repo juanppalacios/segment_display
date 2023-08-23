@@ -16,3 +16,5 @@ Works with a subset of the VHDL character type.
 - check if we can synthesize design
 - create a simple example on hardware
 - once hardware is verified, scrolling either left/right, configurable speed
+- images:
+    - add a top-level diagram if paired with DUT
